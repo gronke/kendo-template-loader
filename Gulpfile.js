@@ -28,7 +28,7 @@ gulp.task('clean', function() {
 
 gulp.task('typescript', function() {
 
-	var tsResult = gulp.src(path.join(config.src, '*.ts'))
+	var tsResult = gulp.src(path.join(config.src, 'kendo-template-loader.ts'))
 	.pipe(plugins.typescript({
 		declaration: true
 	}));
