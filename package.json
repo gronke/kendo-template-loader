@@ -1,0 +1,35 @@
+{
+  "name": "kendo-template-loader",
+  "version": "0.0.1",
+  "description": "Async Kendo Template Loader",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gronke/kendo-template-loader.git"
+  },
+  "keywords": [
+    "kendo",
+    "async",
+    "loader",
+    "template"
+  ],
+  "author": {
+    "name": "Stefan Grönke",
+    "email": "stefan@gronke.net"
+  },
+  "contributors": [{
+      "name": "Rainer Ziller",
+      "email": "r.ziller@continuum.tv"
+    }, {
+      "name": "Stefan Grönke",
+      "email": "stefan@gronke.net"
+  }],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gronke/kendo-template-loader/issues"
+  },
+  "homepage": "https://github.com/gronke/kendo-template-loader#readme"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "kendo-template-loader",
+  "homepage": "https://github.com/gronke/kendo-template-loader",
+  "authors": [
+    "Stefan Grönke <stefan@gronke.net>",
+    "Rainer Ziller <r.ziller@continuum.tv>"
+  ],
+  "description": "Async Kendo Template Loader",
+  "main": "",
+  "moduleType": [
+    "es6"
+  ],
+  "keywords": [
+    "kendo",
+    "template",
+    "loader",
+    "async"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
