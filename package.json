@@ -20,16 +20,28 @@
     "name": "Stefan Grönke",
     "email": "stefan@gronke.net"
   },
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Rainer Ziller",
       "email": "r.ziller@continuum.tv"
-    }, {
+    },
+    {
       "name": "Stefan Grönke",
       "email": "stefan@gronke.net"
-  }],
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/gronke/kendo-template-loader/issues"
   },
-  "homepage": "https://github.com/gronke/kendo-template-loader#readme"
+  "homepage": "https://github.com/gronke/kendo-template-loader#readme",
+  "dependencies": {
+    "chai": "^3.4.1",
+    "gulp": "^3.9.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-typescript": "^2.9.2",
+    "merge2": "^0.3.6",
+    "mocha": "^2.3.3",
+    "rmdir": "^1.1.0"
+  }
 }
