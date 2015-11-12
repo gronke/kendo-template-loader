@@ -8,7 +8,7 @@
   "description": "Async Kendo Template Loader",
   "main": "",
   "moduleType": [
-    "es6"
+    "global"
   ],
   "keywords": [
     "kendo",
