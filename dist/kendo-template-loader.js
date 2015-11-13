@@ -73,7 +73,7 @@ var KendoTemplateLoader = (function () {
             return _this.getTemplate(RegExp.$1);
         });
         return $.Deferred(function (promise) {
-            $.when(promises).then(function () {
+            $.when.apply($, promises).done(function () {
                 promise.resolve();
             });
         });

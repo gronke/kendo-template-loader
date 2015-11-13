@@ -86,7 +86,7 @@ class KendoTemplateLoader {
             return this.getTemplate(RegExp.$1);
         });
         return $.Deferred((promise: JQueryDeferred<void>) => {
-            $.when(promises).then(() => {
+            $.when.apply($, promises).done(() => {
                 promise.resolve();
             });
         });
