@@ -23,5 +23,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "kendo-ui": "kendo-ui-core#~2015.3.1111+SP1"
+  }
 }
