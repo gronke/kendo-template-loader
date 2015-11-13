@@ -60,16 +60,37 @@ class KendoTemplateLoader {
 		$.get(this.getTemplatePath(name))
 		.then(function(data: string) {
 			data = data.trim();
-			that.writeTemplate(name, data);
-			dfd.resolve(data);
+            that.writeTemplate(name, data);
+            that.resolveChildTemplates(data)
+                .then(function () {
+                    dfd.resolve(data);
+                });
+			
 		})
-		.fail(function(e) {
+            .fail(function (e) {
 			dfd.reject(e);
 		});
 
 		return dfd;
 
-	}
+    }
+
+    private resolveChildTemplates(body: string): JQueryPromise<void> {
+        var dataTemplateRegex: RegExp = /\bdata-template=["'](.+?)["']/gi;
+        var matches: RegExpMatchArray = body.match(dataTemplateRegex);
+        if (matches === null) {
+            return <any>$.Deferred().resolve().promise();
+        }
+        var promises = $.map(matches, (match: string) => {
+            match.match(dataTemplateRegex)[1];
+            return this.getTemplate(RegExp.$1);
+        });
+        return $.Deferred((promise: JQueryDeferred<void>) => {
+            $.when(promises).then(() => {
+                promise.resolve();
+            });
+        });
+    }
 
 	private writeTemplate(name: string, body: string, target?: JQuery | string) {
 		var $target: JQuery = $(target || 'body');

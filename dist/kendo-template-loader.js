@@ -51,12 +51,32 @@ var KendoTemplateLoader = (function () {
             .then(function (data) {
             data = data.trim();
             that.writeTemplate(name, data);
-            dfd.resolve(data);
+            that.resolveChildTemplates(data)
+                .then(function () {
+                dfd.resolve(data);
+            });
         })
             .fail(function (e) {
             dfd.reject(e);
         });
         return dfd;
+    };
+    KendoTemplateLoader.prototype.resolveChildTemplates = function (body) {
+        var _this = this;
+        var dataTemplateRegex = /\bdata-template=["'](.+?)["']/gi;
+        var matches = body.match(dataTemplateRegex);
+        if (matches === null) {
+            return $.Deferred().resolve().promise();
+        }
+        var promises = $.map(matches, function (match) {
+            match.match(dataTemplateRegex)[1];
+            return _this.getTemplate(RegExp.$1);
+        });
+        return $.Deferred(function (promise) {
+            $.when(promises).then(function () {
+                promise.resolve();
+            });
+        });
     };
     KendoTemplateLoader.prototype.writeTemplate = function (name, body, target) {
         var $target = $(target || 'body');
