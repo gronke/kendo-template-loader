@@ -30,10 +30,10 @@ var KendoTemplateLoader = (function () {
         return dfd;
     };
     KendoTemplateLoader.prototype.lookupTemplate = function (name) {
-        var templateScriptElement = $('#' + name);
+        var templateScriptElement = $('script[type="text/x-kendo-template"][name="' + name + '"]');
         var dfd = $.Deferred();
         if (templateScriptElement.length) {
-            dfd.resolve(templateScriptElement.html());
+            dfd.resolve(templateScriptElement.text());
         }
         else {
             dfd.reject();
@@ -41,10 +41,30 @@ var KendoTemplateLoader = (function () {
         return dfd;
     };
     KendoTemplateLoader.prototype.loadTemplate = function (name) {
-        return $.get(this.getTemplatePath(name));
+        var that = this;
+        var dfd = $.Deferred();
+        $.get(this.getTemplatePath(name))
+            .then(function (data) {
+            data = data.trim();
+            that.writeTemplate(name, data);
+            dfd.resolve(data);
+        })
+            .fail(function (e) {
+            dfd.reject(e);
+        });
+        return dfd;
+    };
+    KendoTemplateLoader.prototype.writeTemplate = function (name, body, target) {
+        var $target = $(target || 'body');
+        var el = document.createElement('script');
+        el.type = 'text/x-kendo-template';
+        el.text = body;
+        el.setAttribute('name', name);
+        $target.append(el);
     };
     KendoTemplateLoader.prototype.getTemplatePath = function (name) {
         return templatePath + '/' + name + '.' + templateExtension;
     };
     return KendoTemplateLoader;
 })();
+var kendoTemplateLoader = new KendoTemplateLoader();

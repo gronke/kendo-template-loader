@@ -6,5 +6,7 @@ declare class KendoTemplateLoader {
     getTemplate(name: string): JQueryPromise<string>;
     private lookupTemplate(name);
     private loadTemplate(name);
+    private writeTemplate(name, body, target?);
     private getTemplatePath(name);
 }
+declare var kendoTemplateLoader: KendoTemplateLoader;
