@@ -74,6 +74,7 @@ class KendoTemplateLoader {
 		el.type = 'text/x-kendo-template';
 		el.text = body;
 		el.setAttribute('name', name);
+        el.setAttribute('id', name);
 		$target.append(el);
 	}
 
