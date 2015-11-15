@@ -6,13 +6,17 @@ var KendoTemplateLoader = (function () {
     function KendoTemplateLoader() {
     }
     KendoTemplateLoader.prototype.require = function () {
+        var _this = this;
         var templates = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             templates[_i - 0] = arguments[_i];
         }
         return $.Deferred(function (promise) {
-            $.when.apply(null, $.map(templates, this.getTemplate))
-                .all(promise.resolve);
+            var templatePromises = $.map(templates, function (template) {
+                return _this.getTemplate(template);
+            });
+            $.when.apply($, templatePromises)
+                .done(promise.resolve);
         });
     };
     KendoTemplateLoader.prototype.getTemplate = function (name) {
@@ -60,6 +64,7 @@ var KendoTemplateLoader = (function () {
         el.type = 'text/x-kendo-template';
         el.text = body;
         el.setAttribute('name', name);
+        el.setAttribute('id', name);
         $target.append(el);
     };
     KendoTemplateLoader.prototype.getTemplatePath = function (name) {

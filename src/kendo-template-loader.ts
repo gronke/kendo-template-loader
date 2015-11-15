@@ -7,9 +7,12 @@ var templateExtension = 'html';
 class KendoTemplateLoader {
 
 	require(...templates: string[]): JQueryPromise<void> {
-		return $.Deferred(function(promise: JQueryDeferred<void>) {
-			$.when.apply(null, $.map(templates, this.getTemplate))
-				.all(promise.resolve);
+        return $.Deferred((promise: JQueryDeferred<void>) => {
+            var templatePromises = $.map(templates, (template: string) => {
+                return this.getTemplate(template)
+            });
+            $.when.apply($, templatePromises)
+				.done(promise.resolve);
 		});
 	}
 

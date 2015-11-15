@@ -75,4 +75,19 @@ describe('kendo-template-loader', function() {
 
 	});
 
+	it('require 2 templates should load both', function (done) {
+
+	    $.when(ktl.require('valid', 'valid2'))
+		.done(function (data, data2) {
+		    expect(data).to.be.equal('<div>Hello World</div>');
+		    expect(data2).to.be.equal('<div>Hello World 2</div>');
+		    done();
+		})
+		.fail(function (e) {
+		    throw new Error('fixture template "unknown" not found');
+		    done();
+		});
+
+	});
+
 });
