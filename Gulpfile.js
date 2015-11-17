@@ -16,24 +16,58 @@ var config = {
 };
 
 gulp.task('clean', function() {
-	return new Promise(function(resolve, reject) {
-		function done() {
-			mkdirp(config.dist);
-			resolve();
-		}
-		try {
-			if(fs.existsSync(config.dist)) {
-				rmdir(config.dist, done);
-			} else {
-				done();
+	return Promise.all([
+		new Promise(function(resolve, reject) {
+			function done() {
+				mkdirp(config.dist);
+				resolve();
 			}
-		} catch(e) {
-			reject(e);
-		}
-	});
+			try {
+				if(fs.existsSync(config.dist)) {
+					rmdir(config.dist, done);
+				} else {
+					done();
+				}
+			} catch(e) {
+				reject(e);
+			}
+		}),
+		new Promise(function(resolve, reject) {
+			var dir = path.join(config.test, 'test/dist');
+			function done() {
+				mkdirp(dir);
+				resolve();
+			}
+			try {
+				if(fs.existsSync(dir)) {
+					rmdir(config.dist, done);
+				} else {
+					done();
+				}
+			} catch(e) {
+				reject(e);
+			}
+		})
+	]);
 });
 
-gulp.task('typescript', function() {
+gulp.task('typescript:test', function() {
+
+	var tsResult = gulp.src(path.join(config.test, 'mocks/src/*.ts'))
+	.pipe(plugins.typescript({
+		declaration: true
+	}));
+
+	var dest = gulp.dest(path.join(config.test, 'mocks/dist'));
+
+	return merge([
+		tsResult.dts.pipe(dest),
+		tsResult.js.pipe(dest)
+	]);
+
+});
+
+gulp.task('typescript:assets', function() {
 
 	var tsResult = gulp.src(path.join(config.src, 'kendo-template-loader.ts'))
 	.pipe(plugins.typescript({
@@ -47,6 +81,8 @@ gulp.task('typescript', function() {
 
 });
 
+gulp.task('typescript', ['typescript:test', 'typescript:assets']);
+
 gulp.task('mocha', function() {
 	return gulp.src(path.join(config.test, 'runner.html'), {
 		read: false
@@ -59,9 +95,9 @@ gulp.task('mocha', function() {
 });
 
 gulp.task('test', function(cb) {
-	return runSequence('build', 'mocha', cb);
+	return runSequence('build', 'typescript:test', 'mocha', cb);
 });
 gulp.task('build', function(cb) {
-	return runSequence('clean', 'typescript', cb);
+	return runSequence('clean', 'typescript:assets', cb);
 });
 gulp.task('default', ['build']);

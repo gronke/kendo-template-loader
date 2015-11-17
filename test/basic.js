@@ -54,27 +54,6 @@ describe('kendo-template-loader', function() {
 
 	});
 
-	it('should recursively load templates', function (done) {
-
-	    $.when(ktl.getTemplate('parent'))
-		.done(function (data) {
-		    $.when(ktl.lookupTemplate('valid'))
-			.done(function (data) {
-			    expect(data).to.be.equal('<div>Hello World</div>');
-			    done();
-			})
-            .fail(function (e) {
-                throw new Error('the child template was not loaded');
-                done();
-            });
-		})
-		.fail(function (e) {
-		    throw new Error('the parent template was not loaded');
-		    done();
-		});
-
-	});
-
 	it('require 2 templates should load both', function (done) {
 
 	    $.when(ktl.require('valid', 'valid2'))

@@ -37,7 +37,7 @@ class KendoTemplateLoader {
 
 	}
 
-	private lookupTemplate(name: string): JQueryPromise<string> {
+	lookupTemplate(name: string): JQueryPromise<string> {
 		
 		var templateScriptElement: JQuery = $('script[type="text/x-kendo-template"][name="' + name + '"]');
 		var dfd = $.Deferred();
@@ -52,7 +52,7 @@ class KendoTemplateLoader {
 
 	}
 
-	private loadTemplate(name: string): JQueryPromise<string> {
+	loadTemplate(name: string): JQueryPromise<string> {
 		
 		var that = this;
 		var dfd = $.Deferred();
