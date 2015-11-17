@@ -4,6 +4,7 @@ var templatePath = 'fixtures/templates';
 var templateExtension = 'html';
 var KendoTemplateLoader = (function () {
     function KendoTemplateLoader() {
+        this.templatePath = templatePath;
     }
     KendoTemplateLoader.prototype.require = function () {
         var _this = this;
@@ -47,7 +48,7 @@ var KendoTemplateLoader = (function () {
     KendoTemplateLoader.prototype.loadTemplate = function (name) {
         var that = this;
         var dfd = $.Deferred();
-        $.get(this.getTemplatePath(name))
+        $.get(this.getTemplateFilePath(name))
             .then(function (data) {
             data = data.trim();
             that.writeTemplate(name, data);
@@ -78,8 +79,8 @@ var KendoTemplateLoader = (function () {
         el.setAttribute('id', name);
         $target.append(el);
     };
-    KendoTemplateLoader.prototype.getTemplatePath = function (name) {
-        return templatePath + '/' + name + '.' + templateExtension;
+    KendoTemplateLoader.prototype.getTemplateFilePath = function (name) {
+        return this.templatePath + '/' + name + '.' + templateExtension;
     };
     return KendoTemplateLoader;
 })();
