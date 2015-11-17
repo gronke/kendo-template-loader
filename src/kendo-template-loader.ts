@@ -77,19 +77,11 @@ class KendoTemplateLoader {
 
     private resolveChildTemplates(body: string): JQueryPromise<void> {
         var dataTemplateRegex: RegExp = /\bdata-template=["'](.+?)["']/gi;
-        var matches: RegExpMatchArray = body.match(dataTemplateRegex);
-        if (matches === null) {
-            return <any>$.Deferred().resolve().promise();
+        var match, promises = [];
+        while(match = dataTemplateRegex.exec(body)) {
+			promises.push(this.getTemplate(match[1]));
         }
-        var promises = $.map(matches, (match: string) => {
-            match.match(dataTemplateRegex)[1];
-            return this.getTemplate(RegExp.$1);
-        });
-        return $.Deferred((promise: JQueryDeferred<void>) => {
-            $.when.apply($, promises).done(() => {
-                promise.resolve();
-            });
-        });
+        return $.when.apply($, promises);
     }
 
 	private writeTemplate(name: string, body: string, target?: JQuery | string) {

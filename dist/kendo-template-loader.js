@@ -62,21 +62,12 @@ var KendoTemplateLoader = (function () {
         return dfd;
     };
     KendoTemplateLoader.prototype.resolveChildTemplates = function (body) {
-        var _this = this;
         var dataTemplateRegex = /\bdata-template=["'](.+?)["']/gi;
-        var matches = body.match(dataTemplateRegex);
-        if (matches === null) {
-            return $.Deferred().resolve().promise();
+        var match, promises = [];
+        while (match = dataTemplateRegex.exec(body)) {
+            promises.push(this.getTemplate(match[1]));
         }
-        var promises = $.map(matches, function (match) {
-            match.match(dataTemplateRegex)[1];
-            return _this.getTemplate(RegExp.$1);
-        });
-        return $.Deferred(function (promise) {
-            $.when.apply($, promises).done(function () {
-                promise.resolve();
-            });
-        });
+        return $.when.apply($, promises);
     };
     KendoTemplateLoader.prototype.writeTemplate = function (name, body, target) {
         var $target = $(target || 'body');
