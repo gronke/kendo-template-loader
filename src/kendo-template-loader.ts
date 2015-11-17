@@ -1,12 +1,11 @@
 /// <reference path="../typings/tsd.d.ts" />
 'use strict';
 
-var templatePath: string = 'fixtures/templates';
-var templateExtension: string = 'html';
-
 class KendoTemplateLoader {
 
-	templatePath: string = templatePath;
+	templatePath: string = 'fixtures/templates';
+	templateExtension: string = 'html';
+	templateSuffix: string = '-template';
 
 	require(...templates: string[]): JQueryPromise<void> {
         return $.Deferred((promise: JQueryDeferred<void>) => {
@@ -92,12 +91,12 @@ class KendoTemplateLoader {
 		el.type = 'text/x-kendo-template';
 		el.text = body;
 		el.setAttribute('name', name);
-        el.setAttribute('id', name);
+        el.setAttribute('id', name + this.templateSuffix);
 		$target.append(el);
 	}
 
 	private getTemplateFilePath(name: string): string {
-		return this.templatePath + '/' + name + '.' + templateExtension;
+		return this.templatePath + '/' + name + '.' + this.templateExtension;
 	}
 
 }
