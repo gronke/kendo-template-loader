@@ -25,6 +25,6 @@
     "tests"
   ],
   "dependencies": {
-    "kendo-ui": "kendo-ui-core#~2015.3.1111+SP1"
+    "kendo-ui": "kendo-ui-core#master"
   }
 }
