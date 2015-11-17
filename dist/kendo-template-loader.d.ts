@@ -1,8 +1,8 @@
 /// <reference path="../typings/tsd.d.ts" />
-declare var templatePath: string;
-declare var templateExtension: string;
 declare class KendoTemplateLoader {
     templatePath: string;
+    templateExtension: string;
+    templateSuffix: string;
     require(...templates: string[]): JQueryPromise<void>;
     getTemplate(name: string): JQueryPromise<string>;
     lookupTemplate(name: string): JQueryPromise<string>;

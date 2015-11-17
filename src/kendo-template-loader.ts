@@ -80,7 +80,14 @@ class KendoTemplateLoader {
         var dataTemplateRegex: RegExp = /\bdata-template=["'](.+?)["']/gi;
         var match, promises = [];
         while(match = dataTemplateRegex.exec(body)) {
-			promises.push(this.getTemplate(match[1]));
+			var dependencyName: string = match[1];
+
+			var suffixMatchPosition: number = dependencyName.indexOf(this.templateSuffix);
+			if ((suffixMatchPosition !== -1) && ((suffixMatchPosition + this.templateSuffix.length) === dependencyName.length)) {
+				dependencyName = dependencyName.substr(0, suffixMatchPosition);
+			}
+
+			promises.push(this.getTemplate(dependencyName));
         }
         return $.when.apply($, promises);
     }

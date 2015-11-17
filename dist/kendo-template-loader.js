@@ -1,10 +1,10 @@
 /// <reference path="../typings/tsd.d.ts" />
 'use strict';
-var templatePath = 'fixtures/templates';
-var templateExtension = 'html';
 var KendoTemplateLoader = (function () {
     function KendoTemplateLoader() {
-        this.templatePath = templatePath;
+        this.templatePath = 'fixtures/templates';
+        this.templateExtension = 'html';
+        this.templateSuffix = '-template';
     }
     KendoTemplateLoader.prototype.require = function () {
         var _this = this;
@@ -66,7 +66,12 @@ var KendoTemplateLoader = (function () {
         var dataTemplateRegex = /\bdata-template=["'](.+?)["']/gi;
         var match, promises = [];
         while (match = dataTemplateRegex.exec(body)) {
-            promises.push(this.getTemplate(match[1]));
+            var dependencyName = match[1];
+            var suffixMatchPosition = dependencyName.indexOf(this.templateSuffix);
+            if ((suffixMatchPosition !== -1) && ((suffixMatchPosition + this.templateSuffix.length) === dependencyName.length)) {
+                dependencyName = dependencyName.substr(0, suffixMatchPosition);
+            }
+            promises.push(this.getTemplate(dependencyName));
         }
         return $.when.apply($, promises);
     };
@@ -76,11 +81,11 @@ var KendoTemplateLoader = (function () {
         el.type = 'text/x-kendo-template';
         el.text = body;
         el.setAttribute('name', name);
-        el.setAttribute('id', name);
+        el.setAttribute('id', name + this.templateSuffix);
         $target.append(el);
     };
     KendoTemplateLoader.prototype.getTemplateFilePath = function (name) {
-        return this.templatePath + '/' + name + '.' + templateExtension;
+        return this.templatePath + '/' + name + '.' + this.templateExtension;
     };
     return KendoTemplateLoader;
 })();
