@@ -33,7 +33,7 @@ gulp.task('clean', function() {
 			}
 		}),
 		new Promise(function(resolve, reject) {
-			var dir = path.join(config.test, 'test/dist');
+			var dir = path.join(config.test, 'test/mocks/dist');
 			function done() {
 				mkdirp(dir);
 				resolve();
