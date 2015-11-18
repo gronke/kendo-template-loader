@@ -77,7 +77,7 @@ class KendoTemplateLoader {
     }
 
     private resolveChildTemplates(body: string): JQueryPromise<void> {
-        var dataTemplateRegex: RegExp = /\bdata-template=["'](.+?)["']/gi;
+        var dataTemplateRegex: RegExp = /\bdata-(?:[A-z0-9]+\-)*template=["'](.+?)["']/gi;
         var match, promises = [];
         while(match = dataTemplateRegex.exec(body)) {
 			var dependencyName: string = match[1];

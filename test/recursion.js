@@ -6,9 +6,51 @@ describe('kendo-template-loader recursive templates', function() {
 		$('script[type="text/x-kendo-template"]').remove();
 	});
 
-	it('should load nested templates', function (done) {
+	it('should load nested templates via data-template', function (done) {
 
 	    $.when(ktl.getTemplate('parent'))
+		.done(function (data) {
+		    $.when(ktl.lookupTemplate('valid'))
+			.done(function (data) {
+			    expect(data).to.be.equal('<div>Hello World</div>');
+			    done();
+			})
+            .fail(function (e) {
+                throw new Error('the child template was not loaded');
+                done();
+            });
+		})
+		.fail(function (e) {
+		    throw new Error('the parent template was not loaded');
+		    done();
+		});
+
+	});
+
+	it('should load nested templates via data-asset-template', function (done) {
+
+	    $.when(ktl.getTemplate('parent-data-asset'))
+		.done(function (data) {
+		    $.when(ktl.lookupTemplate('valid'))
+			.done(function (data) {
+			    expect(data).to.be.equal('<div>Hello World</div>');
+			    done();
+			})
+            .fail(function (e) {
+                throw new Error('the child template was not loaded');
+                done();
+            });
+		})
+		.fail(function (e) {
+		    throw new Error('the parent template was not loaded');
+		    done();
+		});
+
+	});
+
+	it('should load nested templates via data-properties-template', function (done) {
+
+	    $.when(ktl.getTemplate('parent-data-properties'))
 		.done(function (data) {
 		    $.when(ktl.lookupTemplate('valid'))
 			.done(function (data) {

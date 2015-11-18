@@ -63,7 +63,7 @@ var KendoTemplateLoader = (function () {
         return dfd;
     };
     KendoTemplateLoader.prototype.resolveChildTemplates = function (body) {
-        var dataTemplateRegex = /\bdata-template=["'](.+?)["']/gi;
+        var dataTemplateRegex = /\bdata-(?:[A-z0-9]+\-)*template=["'](.+?)["']/gi;
         var match, promises = [];
         while (match = dataTemplateRegex.exec(body)) {
             var dependencyName = match[1];
