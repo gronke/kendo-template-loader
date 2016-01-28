@@ -18,3 +18,6 @@ Tests are stored in `./test` directory.
 ```bash
 gulp test
 ```
+
+### ToDo
+- Write Tests for custom template file and name `{ file: 'path/to/file', name 'custom-file-template' }`

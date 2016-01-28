@@ -7,18 +7,25 @@ class KendoTemplateLoader {
 	templateExtension: string = 'html';
 	templateSuffix: string = '-template';
 
-	require(...templates: string[]): JQueryPromise<void> {
+	require(...templates: any[]): JQueryPromise<void> {
         return $.Deferred((promise: JQueryDeferred<void>) => {
-            var templatePromises = $.map(templates, (template: string) => {
-                return this.getTemplate(template)
+            var templatePromises = $.map(templates, (template: any) => {
+
+                if(typeof(template) === 'string') {
+                  return this.getTemplate(template);
+                } else {
+                  return this.getTemplate(template.name, template.file);
+                }
+
             });
             $.when.apply($, templatePromises)
 				.done(promise.resolve);
 		});
 	}
 
-	getTemplate(name: string): JQueryPromise<string> {
+	getTemplate(name: string, file?: string): JQueryPromise<string> {
 
+    file = file || name;
 		var that = this;
 		var dfd = $.Deferred();
 
@@ -28,7 +35,7 @@ class KendoTemplateLoader {
 			})
 			.fail(function() {
 
-				$.when(that.loadTemplate(name))
+				$.when(that.loadTemplate(name, file))
 					.then(dfd.resolve)
 					.fail(dfd.reject);
 
@@ -53,12 +60,13 @@ class KendoTemplateLoader {
 
 	}
 
-	loadTemplate(name: string): JQueryPromise<string> {
+	loadTemplate(name: string, file?: string): JQueryPromise<string> {
 		
+    file = file || name;
 		var that = this;
 		var dfd = $.Deferred();
 
-		$.get(this.getTemplateFilePath(name))
+		$.get(this.getTemplateFilePath(file))
 		.then(function(data: string) {
 			data = data.trim();
             that.writeTemplate(name, data);

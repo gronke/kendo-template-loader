@@ -14,13 +14,19 @@ var KendoTemplateLoader = (function () {
         }
         return $.Deferred(function (promise) {
             var templatePromises = $.map(templates, function (template) {
-                return _this.getTemplate(template);
+                if (typeof (template) === 'string') {
+                    return _this.getTemplate(template);
+                }
+                else {
+                    return _this.getTemplate(template.name, template.file);
+                }
             });
             $.when.apply($, templatePromises)
                 .done(promise.resolve);
         });
     };
-    KendoTemplateLoader.prototype.getTemplate = function (name) {
+    KendoTemplateLoader.prototype.getTemplate = function (name, file) {
+        file = file || name;
         var that = this;
         var dfd = $.Deferred();
         $.when(that.lookupTemplate(name))
@@ -28,7 +34,7 @@ var KendoTemplateLoader = (function () {
             dfd.resolve();
         })
             .fail(function () {
-            $.when(that.loadTemplate(name))
+            $.when(that.loadTemplate(name, file))
                 .then(dfd.resolve)
                 .fail(dfd.reject);
         });
@@ -45,10 +51,11 @@ var KendoTemplateLoader = (function () {
         }
         return dfd;
     };
-    KendoTemplateLoader.prototype.loadTemplate = function (name) {
+    KendoTemplateLoader.prototype.loadTemplate = function (name, file) {
+        file = file || name;
         var that = this;
         var dfd = $.Deferred();
-        $.get(this.getTemplateFilePath(name))
+        $.get(this.getTemplateFilePath(file))
             .then(function (data) {
             data = data.trim();
             that.writeTemplate(name, data);
