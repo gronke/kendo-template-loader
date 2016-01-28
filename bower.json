@@ -1,5 +1,6 @@
 {
   "name": "kendo-template-loader",
+  "version": "0.0.2", 
   "homepage": "https://github.com/gronke/kendo-template-loader",
   "authors": [
     "Stefan Grönke <stefan@gronke.net>",
