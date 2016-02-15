@@ -1,6 +1,6 @@
 {
   "name": "kendo-template-loader",
-  "version": "0.0.2",
+  "version": "0.1.2",
   "description": "Async Kendo Template Loader",
   "main": "index.js",
   "scripts": {
