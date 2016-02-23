@@ -14,6 +14,7 @@ describe('kendo-template-loader', function() {
 			done();
 		})
 		.fail(function(e) {
+			console.log(e);
 			throw new Error('fixture template "unknown" not found');
 			done();
 		});

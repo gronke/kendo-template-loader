@@ -53,9 +53,13 @@ var KendoTemplateLoader = (function () {
     };
     KendoTemplateLoader.prototype.loadTemplate = function (name, file) {
         file = file || name;
+        file = file.split('--').join('/');
         var that = this;
         var dfd = $.Deferred();
-        $.get(this.getTemplateFilePath(file))
+        $.ajax({
+            url: this.getTemplateFilePath(file),
+            dataType: 'html'
+        })
             .then(function (data) {
             data = data.trim();
             that.writeTemplate(name, data);

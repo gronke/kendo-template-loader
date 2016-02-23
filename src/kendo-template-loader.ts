@@ -62,11 +62,15 @@ class KendoTemplateLoader {
 
 	loadTemplate(name: string, file?: string): JQueryPromise<string> {
 		
-    file = file || name;
+    	file = file || name;
+    	file = file.split('--').join('/');
 		var that = this;
 		var dfd = $.Deferred();
 
-		$.get(this.getTemplateFilePath(file))
+		$.ajax({
+			url: this.getTemplateFilePath(file),
+			dataType: 'html'
+		})
 		.then(function(data: string) {
 			data = data.trim();
             that.writeTemplate(name, data);
@@ -76,7 +80,7 @@ class KendoTemplateLoader {
                 });
 			
 		})
-            .fail(function (e) {
+        .fail(function (e) {
 			dfd.reject(e);
 		});
 
