@@ -12,8 +12,16 @@ var plugins = gulpLoadPlugins();
 var config = {
 	src: './src',
 	dist: './dist',
-	test: './test'
+	test: './test',
+	connectPort: 9002
 };
+
+gulp.task('connect', function() {
+  plugins.connect.server({
+    root: '.',
+    port: config.connectPort
+  });
+});
 
 gulp.task('clean', function() {
 	return Promise.all([
@@ -84,18 +92,21 @@ gulp.task('typescript:assets', function() {
 gulp.task('typescript', ['typescript:test', 'typescript:assets']);
 
 gulp.task('mocha', function() {
-	return gulp.src(path.join(config.test, 'runner.html'), {
-		read: false
-	}).pipe(plugins.mochaPhantomjs({
+
+	var mochaStream = plugins.mochaPhantomjs();
+	mochaStream.write({
+		path: 'http://127.0.0.1:' + 9002 + '/test/runner.html',
 		reporter: 'spec',
 		phantomjs: {
 			useColors: true
 		}
-	}));
+	});
+	return mochaStream;
+
 });
 
 gulp.task('test', function(cb) {
-	return runSequence('build', 'typescript:test', 'mocha', cb);
+	return runSequence('build', 'typescript:test', 'connect', 'mocha', cb);
 });
 gulp.task('build', function(cb) {
 	return runSequence('clean', 'typescript:assets', cb);

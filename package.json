@@ -4,7 +4,7 @@
   "description": "Async Kendo Template Loader",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test",
+    "test": "node ./node_modules/gulp/bin/gulp.js test",
     "postinstall": "node node_modules/tsd/build/cli.js install"
   },
   "repository": {
@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/gronke/kendo-template-loader#readme",
   "dependencies": {
+    "gulp-connect": "^2.3.1",
     "tsd": "^0.6.5"
   },
   "devDependencies": {
